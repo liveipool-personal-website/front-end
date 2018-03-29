@@ -38,7 +38,7 @@
       @click="goTo('About')"
       :content="about"
       left="15%"
-      top="58%">
+      top="63%">
     </floating-button>
     <floating-button
       class="login-button hidden-xs-only"
@@ -103,38 +103,38 @@ export default {
 }
 
 .blog-button {
-  /*animation: aniOne 10s infinite;*/
+  animation: aniOne 10s infinite;
 }
 
 .about-button {
-  /*animation: aniOne 10s infinite;*/
+  animation: aniTwo 10s infinite;
 }
 
 .login-button {
-  /*animation: aniOne 10s infinite;*/
+  animation: aniThree 10s infinite;
 }
 
 @keyframes aniOne {
   0% {transform: translate(0, 0);}
-  /*10% {transform: translate(.5em, .5em);}*/
-  25% {transform: translate(1.5em, 1em);}
-  /*37% {transform: translate(1.5em, 2em);}*/
-  50% {transform: translate(.5em, 0);}
-  /*60% {transform: translate(-.5em, -1em);}*/
-  75% {transform: translate(1.5em, 1em)}
-  /*90% {transform: translate(2.5em, -1em);}*/
+  25% {transform: translate(1.5em, .5em);}
+  50% {transform: translate(.5em, -.5em);}
+  75% {transform: translate(1.5em, .5em)}
   100% {transform: translate(0, 0);}
 }
 
-/*@keyframes aniTwo {
+@keyframes aniTwo {
   0% {transform: translate(0, 0);}
-  8% {transform: translate(1em, 1em);}
   25% {transform: translate(1em, .5em);}
-  30% {transform: translate(-1em, -.5em);}
   50% {transform: translate(.5em, 0);}
-  70% {transform: translate(1em, -2em);}
   75% {transform: translate(1em, -.5em)}
-  80% {transform: translate(1.5em, .5em);}
   100% {transform: translate(0, 0);}
-}*/
+}
+
+@keyframes aniThree {
+  0% {transform: translate(0, 0);}
+  25% {transform: translate(-.5em, 1em);}
+  50% {transform: translate(.5em, 0);}
+  75% {transform: translate(-.5em, .5em)}
+  100% {transform: translate(0, 0);}
+}
 </style>

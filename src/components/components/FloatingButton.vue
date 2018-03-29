@@ -1,10 +1,9 @@
 <template>
-  <div class="floating-button">
-    <button
-      :style="{
-        margin, padding, border, borderRadius, color, backgroundColor,
-        opacity, left, top, width, height, fontSize }">{{ content }}</button>
-  </div>
+  <button
+    class="floating-button"
+    :style="{
+      margin, padding, border, borderRadius, color, backgroundColor,
+      opacity, left, top, width, height, fontSize }">{{ content }}</button>
 </template>
 
 <script>
@@ -89,7 +88,8 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-.floating-button button {
+.floating-button {
+  display: inline-block;
   position: absolute;
   outline: none;
   font-weight: bold;
