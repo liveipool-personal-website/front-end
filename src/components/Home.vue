@@ -5,8 +5,8 @@
     <div class="title">{{ msg }}</div>
     <floating-button
       class="blog-button hidden-xs-only"
-      @click="goTo('Blog')"
       :content="blog"
+      routeName="Blog"
       left="35%"
       top="20%"
       width="10em"
@@ -15,8 +15,8 @@
     </floating-button>
     <floating-button
       class="blog-button hidden-sm-and-up"
-      @click="goTo('Blog')"
       :content="blog"
+      routeName="Blog"
       left="40%"
       top="20%"
       width="7em"
@@ -25,8 +25,8 @@
     </floating-button>
     <floating-button
       class="about-button hidden-xs-only"
-      @click="goTo('About')"
       :content="about"
+      routeName="About"
       left="7%"
       top="58%"
       width="7em"
@@ -35,19 +35,18 @@
     </floating-button>
     <floating-button
       class="about-button hidden-sm-and-up"
-      @click="goTo('About')"
       :content="about"
+      routeName="About"
       left="15%"
       top="63%">
     </floating-button>
     <floating-button
       class="login-button hidden-xs-only"
-      @click="goTo('Login')"
       :content="login"
+      routeName="Login"
       left="80%"
       top="5%">
     </floating-button>
-    <!-- <floating-button :content="content" :color="color"></floating-button> -->
   </div>
 </template>
 
@@ -72,9 +71,6 @@ export default {
     };
   },
   methods: {
-    goTo(someWhere) {
-      this.$router.push({ name: someWhere });
-    },
   },
 };
 </script>

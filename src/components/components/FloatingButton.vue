@@ -3,7 +3,8 @@
     class="floating-button"
     :style="{
       margin, padding, border, borderRadius, color, backgroundColor,
-      opacity, left, top, width, height, fontSize }">{{ content }}</button>
+      opacity, left, top, width, height, fontSize }"
+    @click="goTo(routeName)">{{ content }}</button>
 </template>
 
 <script>
@@ -12,6 +13,11 @@ export default {
   props: {
     // 按钮中的内容
     content: {
+      type: String,
+      default: '',
+    },
+    // 去到哪个页面
+    routeName: {
       type: String,
       default: '',
     },
@@ -82,6 +88,11 @@ export default {
     };
   },
   methods: {
+    goTo(someWhere) {
+      if (someWhere !== '') {
+        this.$router.push({ name: someWhere });
+      }
+    },
   },
 };
 </script>
