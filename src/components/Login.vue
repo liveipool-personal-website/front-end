@@ -1,18 +1,18 @@
 <template>
-  <div class="about">
+  <div class="login">
     <h1>{{ msg }}</h1>
     <el-button type="primary" @click="goHome">主页</el-button>
     <el-button type="primary" @click="goToBlog">文章</el-button>
-    <el-button type="primary" @click="goToLogin">作者登录</el-button>
+    <el-button type="primary" @click="goToAbout">关于作者</el-button>
   </div>
 </template>
 
 <script>
 export default {
-  name: 'About',
+  name: 'Login',
   data() {
     return {
-      msg: '关于作者页面',
+      msg: '作者登录页面',
     };
   },
   methods: {
@@ -22,8 +22,8 @@ export default {
     goToBlog() {
       this.$router.push({ name: 'Blog' });
     },
-    goToLogin() {
-      this.$router.push({ name: 'Login' });
+    goToAbout() {
+      this.$router.push({ name: 'About' });
     },
   },
 };
@@ -31,7 +31,4 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-h1, h2 {
-  font-weight: normal;
-}
 </style>

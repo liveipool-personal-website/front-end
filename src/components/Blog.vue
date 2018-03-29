@@ -3,6 +3,7 @@
     <h1>{{ msg }}</h1>
     <el-button type="primary" @click="goHome">主页</el-button>
     <el-button type="primary" @click="goToAbout">关于作者</el-button>
+    <el-button type="primary" @click="goToLogin">作者登录</el-button>
   </div>
 </template>
 
@@ -20,6 +21,9 @@ export default {
     },
     goToAbout() {
       this.$router.push({ name: 'About' });
+    },
+    goToLogin() {
+      this.$router.push({ name: 'Login' });
     },
   },
 };

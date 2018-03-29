@@ -1,26 +1,79 @@
 <template>
   <div class="home">
-    <img class="background-image" src="@/../static/home.jpg">
+    <img class="background-image hidden-xs-only" src="@/../static/homeBig.jpg">
+    <img class="background-image hidden-sm-and-up" src="@/../static/homeSmall.jpg">
     <div class="title">{{ msg }}</div>
-    <button class="blog-button" @click="goToBlog">博客</button>
-    <button class="about-button" @click="goToAbout">关于作者</button>
+    <floating-button
+      class="blog-button hidden-xs-only"
+      @click="goTo('Blog')"
+      :content="blog"
+      left="35%"
+      top="20%"
+      width="10em"
+      height="10em"
+      fontSize="1.5em">
+    </floating-button>
+    <floating-button
+      class="blog-button hidden-sm-and-up"
+      @click="goTo('Blog')"
+      :content="blog"
+      left="40%"
+      top="20%"
+      width="7em"
+      height="7em"
+      fontSize="1.2em">
+    </floating-button>
+    <floating-button
+      class="about-button hidden-xs-only"
+      @click="goTo('About')"
+      :content="about"
+      left="7%"
+      top="58%"
+      width="7em"
+      height="7em"
+      fontSize="1.2em">
+    </floating-button>
+    <floating-button
+      class="about-button hidden-sm-and-up"
+      @click="goTo('About')"
+      :content="about"
+      left="15%"
+      top="58%">
+    </floating-button>
+    <floating-button
+      class="login-button hidden-xs-only"
+      @click="goTo('Login')"
+      :content="login"
+      left="80%"
+      top="5%">
+    </floating-button>
+    <!-- <floating-button :content="content" :color="color"></floating-button> -->
   </div>
 </template>
 
 <script>
+import FloatingButton from './components/FloatingButton';
+
 export default {
   name: 'Home',
+  components: {
+    FloatingButton,
+  },
   data() {
     return {
-      msg: '李为的个人主页',
+      msg: '',
+      blog: '文章',
+      about: '关于作者',
+      login: '作者登录',
+
+      // 传进FloatingButton的参数
+      content: 'lala',
+      color: 'red',
     };
   },
   methods: {
-    goToBlog() {
-      this.$router.push({ name: 'Blog' });
-    },
-    goToAbout() {
-      this.$router.push({ name: 'About' });
+    goTo(someWhere) {
+      this.$router.push({ name: someWhere });
     },
   },
 };
@@ -31,7 +84,6 @@ export default {
 .home {
   width: 100vw;
   height: 100vh;
-  /*background-image: url('../../static/home.jpeg');*/
 }
 
 .background-image {
@@ -43,60 +95,38 @@ export default {
 
 .title {
   position: absolute;
-  left: .2em;
-  top: .2em;
+  left: 2%;
+  top: 2%;
   font-weight: bold;
   font-size: 2.5em;
-  color: #fff;
-}
-
-.blog-button,
-.about-button {
-  position: absolute;
-  margin: 0;
-  padding: 0;
-  background-clip: padding-box;
-  border: 5em solid transparent;
-  border-radius: 50%;
-  outline: none;
   color: #fb3;
-  font-weight: bold;
-  background-color: #58a;
-  cursor: pointer;
-  opacity: 0.8;
 }
 
 .blog-button {
-  left: 15em;
-  top: 7em;
-  width: 18em;
-  height: 18em;
-  font-size: 1.5em;
-  animation: aniOne 10s infinite;
+  /*animation: aniOne 10s infinite;*/
 }
 
 .about-button {
-  left: 40em;
-  top: 6em;
-  width: 15em;
-  height: 15em;
-  font-size: 1.3em;
-  animation: aniTwo 10s infinite;
+  /*animation: aniOne 10s infinite;*/
+}
+
+.login-button {
+  /*animation: aniOne 10s infinite;*/
 }
 
 @keyframes aniOne {
   0% {transform: translate(0, 0);}
-  10% {transform: translate(.5em, .5em);}
+  /*10% {transform: translate(.5em, .5em);}*/
   25% {transform: translate(1.5em, 1em);}
-  37% {transform: translate(1.5em, 2em);}
+  /*37% {transform: translate(1.5em, 2em);}*/
   50% {transform: translate(.5em, 0);}
-  60% {transform: translate(-.5em, -1em);}
+  /*60% {transform: translate(-.5em, -1em);}*/
   75% {transform: translate(1.5em, 1em)}
-  90% {transform: translate(2.5em, -1em);}
+  /*90% {transform: translate(2.5em, -1em);}*/
   100% {transform: translate(0, 0);}
 }
 
-@keyframes aniTwo {
+/*@keyframes aniTwo {
   0% {transform: translate(0, 0);}
   8% {transform: translate(1em, 1em);}
   25% {transform: translate(1em, .5em);}
@@ -106,5 +136,5 @@ export default {
   75% {transform: translate(1em, -.5em)}
   80% {transform: translate(1.5em, .5em);}
   100% {transform: translate(0, 0);}
-}
+}*/
 </style>
