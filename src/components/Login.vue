@@ -2,7 +2,7 @@
   <div class="login">
     <h1>{{ msg }}</h1>
     <el-button type="primary" @click="goHome">主页</el-button>
-    <el-button type="primary" @click="goToBlog">文章</el-button>
+    <el-button type="primary" @click="goToBlog">博客</el-button>
     <el-button type="primary" @click="goToAbout">关于作者</el-button>
   </div>
 </template>

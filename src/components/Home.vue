@@ -61,7 +61,7 @@ export default {
   data() {
     return {
       msg: '',
-      blog: '文章',
+      blog: '博客',
       about: '关于作者',
       login: '作者登录',
 
