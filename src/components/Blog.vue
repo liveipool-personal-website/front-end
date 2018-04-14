@@ -8,15 +8,9 @@
           prefix-icon="el-icon-search"
           v-model="searchBar">
         </el-input>
-        <div class="categorys">
-          <i class="el-icon-arrow-left"></i>
-          <el-row class="categorys-text">
-            <el-col :span="6" v-for="category in categorys" :key="category.index">
-              <span class="category">{{ category }}</span>
-            </el-col>
-          </el-row>
-          <i class="el-icon-arrow-right"></i>
-        </div>
+
+        <categorys :categorys="categorys"></categorys>
+
         <div class="blogs-info">
           <div class="blog-info" v-for="blogInfo in blogsInfo" :key="blogInfo.index">
             <div class="blog-title">· {{ blogInfo.title }}</div>
@@ -33,18 +27,22 @@
 
 <script>
 import fakeData from '@/utils/fakeData';
+import Categorys from './components/Categorys';
 
 export default {
   name: 'Blog',
+  components: {
+    Categorys,
+  },
   data() {
     return {
       // 搜索框的输入值
       searchBar: '',
 
-      // 类别部分相关数据
+      // 类别组件相关数据
       // 全部类别数组
       allCategorys: [],
-      // 显示在页面上的类别
+      // 显示在页面上的类别数组
       categorys: [],
       // 当前显示的第一个类别的序号
       firstCategoryNumber: 0,
@@ -103,43 +101,6 @@ export default {
 .right-content {
   height: 100%;
   border: 2px solid #fb3;
-}
-
-.categorys {
-  position: relative;
-  width: 100%;
-  height: 40px;
-  border: 0;
-}
-
-.el-icon-arrow-left,
-.el-icon-arrow-right {
-  position: absolute;
-  width: 16px;
-  height: 16px;
-  top: 12px;
-}
-
-.el-icon-arrow-left {
-  left: 5px;
-}
-
-.el-icon-arrow-right {
-  right: 5px;
-}
-
-.categorys-text {
-  position: relative;
-  top: 9px;
-  margin: 0 21px;
-  width: calc(100% - 42px);
-  display: inline-block;
-
-}
-
-.categorys-text .el-col {
-  text-align: center;
-  cursor: pointer;
 }
 
 .blogs-info {
