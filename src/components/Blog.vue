@@ -11,14 +11,14 @@
         <div class="categorys">
           <i class="el-icon-arrow-left"></i>
           <el-row class="categorys-text">
-            <el-col :span="6" v-for="category in categorys" :key="category">
+            <el-col :span="6" v-for="category in categorys" :key="category.index">
               <span class="category">{{ category }}</span>
             </el-col>
           </el-row>
           <i class="el-icon-arrow-right"></i>
         </div>
         <div class="blogs-info">
-          <div class="blog-info" v-for="blogInfo in blogsInfo" :key="blogInfo in blogsInfo">
+          <div class="blog-info" v-for="blogInfo in blogsInfo" :key="blogInfo.index">
             <div class="blog-title">· {{ blogInfo.title }}</div>
             <div class="blog-upload-date">{{ blogInfo.uploadDate }}</div>
           </div>
@@ -32,6 +32,8 @@
 </template>
 
 <script>
+import fakeData from '@/utils/fakeData';
+
 export default {
   name: 'Blog',
   data() {
@@ -50,12 +52,10 @@ export default {
       showCategorysCount: 4,
 
       // 文章标题列表部分相关数据
-      // 所有现在已存的文章信息，模拟后端数据
-      allBlogsInfo: [],
       // 显示在页面上的文章信息列表
       blogsInfo: [],
       // 每次请求多少个文章信息
-      blogsInfoCount: 15,
+      blogsInfoCount: 20,
       // 最近一次请求的文章信息列表的序号
       blogsInfoNumber: 0,
     };
@@ -64,54 +64,19 @@ export default {
   },
   mounted() {
     // 获取类别种类
-    const allCategorys = ['全部', '数学', '美术', '英语', '体育', '语文', '政治'];
+    const allCategorys = fakeData.allCategorys;
+    // const allCategorys = ['全部', '数学', '美术', '英语', '体育', '语文', '政治'];
     for (let i = this.firstCategoryNumber; i < this.showCategorysCount; i += 1) {
       this.categorys.push(allCategorys[i]);
     }
 
     // 获取所有现在已存的文章信息列表，模拟后端数据
-    const allBlogsInfo = [
-      {
-        title: '如何评价中山大学',
-        uploadDate: '2018.03.28',
-      }, {
-        title: '春游',
-        uploadDate: '2018.03.27',
-      }, {
-        title: '星巴克焦糖咖啡星冰乐',
-        uploadDate: '2018.03.26',
-      }, {
-        title: '我是一个特别长特别长特别长特别长特别长的名字',
-        uploadDate: '2018.03.25',
-      }, {
-        title: '今天天气如何',
-        uploadDate: '2018.03.24',
-      }, {
-        title: '毕业设计',
-        uploadDate: '2018.03.23',
-      }, {
-        title: '软件工程专业',
-        uploadDate: '2018.03.22',
-      }, {
-        title: '政治',
-        uploadDate: '2018.03.21',
-      }, {
-        title: 'iphoneX',
-        uploadDate: '2018.03.21',
-      }, {
-        title: '猫',
-        uploadDate: '2018.03.20',
-      }, {
-        title: '橘猫',
-        uploadDate: '2018.03.19',
-      },
-    ];
-    this.allBlogsInfo = allBlogsInfo;
+    const allBlogsInfo = fakeData.allBlogsInfo;
     // 获取当前种类下的各文章信息
     for (let i = this.blogsInfoNumber;
       i < this.blogsInfoCount * (this.blogsInfoNumber + 1); i += 1) {
-      if (this.allBlogsInfo[i]) {
-        this.blogsInfo.push(this.allBlogsInfo[i]);
+      if (allBlogsInfo[i]) {
+        this.blogsInfo.push(allBlogsInfo[i]);
       }
     }
   },
