@@ -13,7 +13,8 @@
       </el-col>
       <el-col class="right-content" :sm="18" :md="18" :lg="18" :xl="18">
         <normal-head-bar :buttons="buttons"></normal-head-bar>
-        <blogs-info id="lala" class="test" :blogsInfo="blogsInfo"></blogs-info>
+        <!-- <blogs-info id="lala" class="test" :blogsInfo="blogsInfo"></blogs-info> -->
+        <blog-content title="如何评价中山大学" :content="content"></blog-content>
       </el-col>
     </el-row>
   </div>
@@ -24,6 +25,7 @@ import fakeData from '@/utils/fakeData';
 import Categorys from './components/Categorys';
 import BlogsInfo from './components/BlogsInfo';
 import NormalHeadBar from './components/NormalHeadBar';
+import BlogContent from './components/BlogContent';
 
 export default {
   name: 'Blog',
@@ -31,6 +33,7 @@ export default {
     Categorys,
     BlogsInfo,
     NormalHeadBar,
+    BlogContent,
   },
   data() {
     return {
@@ -73,6 +76,9 @@ export default {
 
       // 跳转按钮列表
       oldScrollTop: 0,
+
+      // 博客正文
+      content: fakeData.content,
     };
   },
   methods: {
