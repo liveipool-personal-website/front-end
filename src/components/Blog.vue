@@ -8,15 +8,8 @@
           prefix-icon="el-icon-search"
           v-model="searchBar">
         </el-input>
-
         <categorys :categorys="categorys"></categorys>
-
-        <div class="blogs-info">
-          <div class="blog-info" v-for="blogInfo in blogsInfo" :key="blogInfo.index">
-            <div class="blog-title">· {{ blogInfo.title }}</div>
-            <div class="blog-upload-date">{{ blogInfo.uploadDate }}</div>
-          </div>
-        </div>
+        <blogs-info :blogsInfo="blogsInfo"></blogs-info>
       </el-col>
       <el-col class="right-content" :sm="18" :md="18" :lg="18" :xl="18">
         <div>右</div>
@@ -28,11 +21,13 @@
 <script>
 import fakeData from '@/utils/fakeData';
 import Categorys from './components/Categorys';
+import BlogsInfo from './components/BlogsInfo';
 
 export default {
   name: 'Blog',
   components: {
     Categorys,
+    BlogsInfo,
   },
   data() {
     return {
@@ -101,43 +96,6 @@ export default {
 .right-content {
   height: 100%;
   border: 2px solid #fb3;
-}
-
-.blogs-info {
-  width: 100%;
-  height: calc(100% - 80px);
-  overflow-y: auto;
-}
-
-.blog-info {
-  width: 100%;
-  height: 40px;
-  margin-top: 10px;
-  margin-bottom: 10px;
-  cursor: pointer;
-}
-
-.blog-info:hover {
-  background-color: #FFDDAA;
-}
-
-.blog-title {
-  width: calc(100% - 25px);
-  height: 22px;
-  padding: 0 10px 0 15px;
-  font-size: 18px;
-  color: #3c3c3c;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-}
-
-.blog-upload-date {
-  width: calc(100% - 39px);
-  height: 18px;
-  padding: 0 10px 0 29px;
-  font-size: 14px;
-  color: #aaa;
 }
 </style>
 
