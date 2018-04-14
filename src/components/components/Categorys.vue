@@ -12,6 +12,7 @@
 
 <script>
 export default {
+  // 分类列表
   name: 'Categorys',
   props: {
     // 每个数据占多少比例
@@ -61,7 +62,6 @@ export default {
   margin: 0 21px;
   width: calc(100% - 42px);
   display: inline-block;
-
 }
 
 .categorys-text .el-col {

@@ -9,6 +9,7 @@
 
 <script>
 export default {
+  // 浮在页面上层的按钮
   name: 'FloatingButton',
   props: {
     // 按钮中的内容

@@ -1,20 +1,21 @@
 <template>
-<div class="blogs-info">
-  <div class="blog-info" v-for="blogInfo in blogsInfo" :key="blogInfo.index">
-    <div class="blog-title">· {{ blogInfo.title }}</div>
-    <div class="blog-upload-date">{{ blogInfo.uploadDate }}</div>
+  <div class="blogs-info">
+    <div class="blog-info" v-for="blogInfo in blogsInfo" :key="blogInfo.index">
+      <div class="blog-title">· {{ blogInfo.title }}</div>
+      <div class="blog-upload-date">{{ blogInfo.uploadDate }}</div>
+    </div>
   </div>
-</div>
 </template>
 
 <script>
 export default {
+  // 博客相关信息
   name: 'BlogsInfo',
   props: {
-    // 显示在页面上的文章信息列表
+    // 显示在页面上的博客信息列表
     blogsInfo: {
       type: Array,
-      default: function defaultCategorys() {
+      default: function defaultBlogsInfo() {
         return [];
       },
     },

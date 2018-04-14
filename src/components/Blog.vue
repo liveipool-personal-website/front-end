@@ -4,7 +4,7 @@
       <el-col class="left-content" :sm="6" :md="6" :lg="6" :xl="6">
         <el-input
           class="search-bar"
-          placeholder="请输入文章名进行搜索"
+          placeholder="请输入博客名进行搜索"
           prefix-icon="el-icon-search"
           v-model="searchBar">
         </el-input>
@@ -12,7 +12,8 @@
         <blogs-info :blogsInfo="blogsInfo"></blogs-info>
       </el-col>
       <el-col class="right-content" :sm="18" :md="18" :lg="18" :xl="18">
-        <div>右</div>
+        <normal-head-bar :buttons="buttons"></normal-head-bar>
+        <blogs-info id="lala" class="test" :blogsInfo="blogsInfo"></blogs-info>
       </el-col>
     </el-row>
   </div>
@@ -22,12 +23,14 @@
 import fakeData from '@/utils/fakeData';
 import Categorys from './components/Categorys';
 import BlogsInfo from './components/BlogsInfo';
+import NormalHeadBar from './components/NormalHeadBar';
 
 export default {
   name: 'Blog',
   components: {
     Categorys,
     BlogsInfo,
+    NormalHeadBar,
   },
   data() {
     return {
@@ -44,13 +47,32 @@ export default {
       // 页面上总共显示多少个类别
       showCategorysCount: 4,
 
-      // 文章标题列表部分相关数据
-      // 显示在页面上的文章信息列表
+      // 博客标题列表部分相关数据
+      // 显示在页面上的博客信息列表
       blogsInfo: [],
-      // 每次请求多少个文章信息
+      // 每次请求多少个博客信息
       blogsInfoCount: 20,
-      // 最近一次请求的文章信息列表的序号
+      // 最近一次请求的博客信息列表的序号
       blogsInfoNumber: 0,
+
+      // 普通的处于页面正常结构中的顶部跳转按钮列表中的各按钮信息
+      buttons: [
+        {
+          content: '主页',
+          routeName: 'Home',
+        },
+        {
+          content: '关于作者',
+          routeName: 'About',
+        },
+        {
+          content: '登录',
+          routeName: 'Login',
+        },
+      ],
+
+      // 跳转按钮列表
+      oldScrollTop: 0,
     };
   },
   methods: {
@@ -63,15 +85,27 @@ export default {
       this.categorys.push(allCategorys[i]);
     }
 
-    // 获取所有现在已存的文章信息列表，模拟后端数据
+    // 获取所有现在已存的博客信息列表，模拟后端数据
     const allBlogsInfo = fakeData.allBlogsInfo;
-    // 获取当前种类下的各文章信息
+    // 获取当前种类下的各博客信息
     for (let i = this.blogsInfoNumber;
       i < this.blogsInfoCount * (this.blogsInfoNumber + 1); i += 1) {
       if (allBlogsInfo[i]) {
         this.blogsInfo.push(allBlogsInfo[i]);
       }
     }
+
+    // const lala = document.getElementById('lala');
+    // const headBar = document.getElementById('headBar');
+    // lala.addEventListener('scroll', function (event) {
+    //   console.log('event.target.scrollTop: ', event.target.scrollTop);
+    //   if (event.target.scrollTop > this.oldScrollTop) {
+    //     headBar.style.display = 'none';
+    //   } else {
+    //     headBar.style.display = '';
+    //   }
+    //   this.oldScrollTop = event.target.scrollTop;
+    // });
   },
 };
 </script>
@@ -95,7 +129,6 @@ export default {
 
 .right-content {
   height: 100%;
-  border: 2px solid #fb3;
 }
 </style>
 
