@@ -11,9 +11,11 @@
         <categorys :categorys="categorys"></categorys>
         <blogs-info :blogsInfo="blogsInfo"></blogs-info>
       </el-col>
-      <el-col class="right-content" :sm="18" :md="18" :lg="18" :xl="18">
+      <el-col
+        @scroll.native="scrollEvent" class="right-content"
+        :sm="18" :md="18" :lg="18" :xl="18">
         <normal-head-bar :buttons="buttons"></normal-head-bar>
-        <!-- <blogs-info id="lala" class="test" :blogsInfo="blogsInfo"></blogs-info> -->
+        <floating-head-bar id="floatingHeadBar" :buttons="buttons"></floating-head-bar>
         <blog-content title="如何评价中山大学" :content="content"></blog-content>
       </el-col>
     </el-row>
@@ -25,6 +27,7 @@ import fakeData from '@/utils/fakeData';
 import Categorys from './components/Categorys';
 import BlogsInfo from './components/BlogsInfo';
 import NormalHeadBar from './components/NormalHeadBar';
+import FloatingHeadBar from './components/FloatingHeadBar';
 import BlogContent from './components/BlogContent';
 
 export default {
@@ -33,6 +36,7 @@ export default {
     Categorys,
     BlogsInfo,
     NormalHeadBar,
+    FloatingHeadBar,
     BlogContent,
   },
   data() {
@@ -82,11 +86,19 @@ export default {
     };
   },
   methods: {
+    scrollEvent(event) {
+      const floatingHeadBar = document.getElementById('floatingHeadBar');
+      if (event.target.scrollTop > this.oldScrollTop || event.target.scrollTop < 58) {
+        floatingHeadBar.style.display = 'none';
+      } else {
+        floatingHeadBar.style.display = '';
+      }
+      this.oldScrollTop = event.target.scrollTop;
+    },
   },
   mounted() {
     // 获取类别种类
     const allCategorys = fakeData.allCategorys;
-    // const allCategorys = ['全部', '数学', '美术', '英语', '体育', '语文', '政治'];
     for (let i = this.firstCategoryNumber; i < this.showCategorysCount; i += 1) {
       this.categorys.push(allCategorys[i]);
     }
@@ -100,18 +112,6 @@ export default {
         this.blogsInfo.push(allBlogsInfo[i]);
       }
     }
-
-    // const lala = document.getElementById('lala');
-    // const headBar = document.getElementById('headBar');
-    // lala.addEventListener('scroll', function (event) {
-    //   console.log('event.target.scrollTop: ', event.target.scrollTop);
-    //   if (event.target.scrollTop > this.oldScrollTop) {
-    //     headBar.style.display = 'none';
-    //   } else {
-    //     headBar.style.display = '';
-    //   }
-    //   this.oldScrollTop = event.target.scrollTop;
-    // });
   },
 };
 </script>
@@ -135,6 +135,7 @@ export default {
 
 .right-content {
   height: 100%;
+  overflow-y: auto;
 }
 </style>
 

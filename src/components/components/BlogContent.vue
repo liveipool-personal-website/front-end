@@ -29,7 +29,6 @@ export default {
 .blog-content {
   width: 100%;
   height: calc(100% - 78px);
-  overflow-y: auto;
 }
 
 .title {

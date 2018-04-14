@@ -32,7 +32,6 @@ export default {
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
 .routing-button {
-  float: right;
   min-width: 80px;
   margin: 10px;
   padding: 8px;

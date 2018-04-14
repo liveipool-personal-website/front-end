@@ -1,6 +1,7 @@
 <template>
-  <div class="normal-head-bar">
+  <div class="floating-head-bar">
     <routing-button
+      class="floating-routing-button"
       v-for="button in buttons"
       :button="button"
       :key="button.content">
@@ -12,8 +13,8 @@
 import RoutingButton from './RoutingButton';
 
 export default {
-  // 普通的处于页面正常结构中的顶部跳转按钮列表
-  name: 'NormalHeadBar',
+  // 处在页面顶层的顶部跳转按钮列表
+  name: 'FloatingHeadBar',
   components: {
     RoutingButton,
   },
@@ -31,10 +32,19 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-.normal-head-bar {
-  width: 100%;
+.floating-head-bar {
+  position: fixed;
+  top: 0;
+  width: inherit;
   height: 58px;
   padding: 0;
+  background-color: #fff;
+  opacity: 0.9;
+  z-index: 9998;
   text-align: right;
+}
+
+.floating-routing-button {
+  z-index: 9999;
 }
 </style>
