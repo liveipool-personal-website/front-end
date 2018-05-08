@@ -2,7 +2,7 @@
   <div class="home">
     <img class="background-image hidden-xs-only" src="@/../static/homeBig.jpg">
     <img class="background-image hidden-sm-and-up" src="@/../static/homeSmall.jpg">
-    <div class="title">{{ msg }}</div>
+    <div class="title">{{ slogan }}</div>
     <floating-button
       class="blog-button hidden-xs-only"
       :content="blog"
@@ -51,6 +51,7 @@
 </template>
 
 <script>
+import constants from '@/utils/constants';
 import FloatingButton from './components/FloatingButton';
 
 export default {
@@ -60,15 +61,34 @@ export default {
   },
   data() {
     return {
-      msg: '',
       blog: '博客',
       about: '关于作者',
       login: '作者登录',
+      slogan: '',
+      bigBackPicUrl: '',
+      smallBackPicUrl: '',
 
       // 传进FloatingButton的参数
       content: 'lala',
       color: 'red',
     };
+  },
+  mounted() {
+    // 获取大背景图
+    this.$http.get(`${constants.serverUrl}/home/bigBackPic`)
+      .then((response) => {
+        this.bigBackPicUrl = `@/../${response.body.bigBackPicUrl}`;
+      });
+    // 获取小背景图
+    this.$http.get(`${constants.serverUrl}/home/smallBackPic`)
+      .then((response) => {
+        this.smallBackPicUrl = `@/../${response.body.smallBackPicUrl}`;
+      });
+    // 获取主页标语
+    this.$http.get(`${constants.serverUrl}/home/slogan`)
+      .then((response) => {
+        this.slogan = response.body.slogan;
+      });
   },
   methods: {
   },

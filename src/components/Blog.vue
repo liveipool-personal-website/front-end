@@ -43,6 +43,7 @@
 </template>
 
 <script>
+import constants from '@/utils/constants';
 import fakeData from '@/utils/fakeData';
 import Categorys from './components/Categorys';
 import BlogsInfo from './components/BlogsInfo';
@@ -68,11 +69,11 @@ export default {
       // 全部类别数组
       allCategorys: [],
       // 显示在页面上的类别数组
-      categorys: [],
+      categorys: ['全部'],
       // 当前显示的第一个类别的序号
-      firstCategoryNumber: 0,
-      // 页面上总共显示多少个类别
-      showCategorysCount: 4,
+      firstCategoryNumber: 1,
+      // 页面上总共显示多少个类别+1
+      showCategorysCount: 3,
 
       // 博客标题列表部分相关数据
       // 显示在页面上的博客信息列表
@@ -122,11 +123,14 @@ export default {
     },
   },
   mounted() {
-    // 获取类别种类
-    const allCategorys = fakeData.allCategorys;
-    for (let i = this.firstCategoryNumber; i < this.showCategorysCount; i += 1) {
-      this.categorys.push(allCategorys[i]);
-    }
+    // 获取类别数组
+    this.$http.get(`${constants.serverUrl}/blog/categorys`)
+      .then((response) => {
+        const tmpData = response.body;
+        for (let i = this.firstCategoryNumber - 1; i < this.showCategorysCount; i += 1) {
+          this.categorys.push(tmpData[i].category);
+        }
+      });
 
     // 获取所有现在已存的博客信息列表，模拟后端数据
     const allBlogsInfo = fakeData.allBlogsInfo;
