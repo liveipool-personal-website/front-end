@@ -1,8 +1,10 @@
 <template>
   <div class="blog-infos">
     <div
-      class="blog-info" v-for="blogInfo in blogInfos"
-      :key="blogInfo.index" @click="handleBlogClick(blogInfo)">
+      v-for="blogInfo in blog.blogInfos"
+      :key="blogInfo.index"
+      :class="blogInfo.blogId === blog.currentActiveBlogId ? 'blog-info active-blog' : 'blog-info'"
+      @click="handleBlogClick(blogInfo.blogId)">
       <div class="blog-title">· {{ blogInfo.title }}</div>
       <div class="blog-upload-date">{{ blogInfo.uploadDate }}</div>
     </div>
@@ -10,38 +12,28 @@
 </template>
 
 <script>
-import constants from '@/utils/constants';
-
 export default {
   // 博客相关信息
   name: 'BlogInfos',
   props: {
-    // 显示在页面上的博客信息列表
-    blogInfos: {
-      type: Array,
-      default: function defaultBlogInfos() {
-        return [];
-      },
-    },
-    // 博客内容部分
-    blogContent: {
+    // 博客标题列表部分相关数据
+    blog: {
       type: Object,
-      default: function defaultBlogContent() {
+      default: function defaultBlog() {
         return {
-          title: '暂无标题',
-          content: '暂无内容',
+          // 拿到的所有博客信息列表
+          allBlogInfos: [],
+          // 显示在页面上的博客信息列表
+          blogInfos: [],
+          // 当前显示的博客的blogId
+          currentActiveBlogId: 0,
         };
       },
     },
   },
   methods: {
-    handleBlogClick(blogInfo) {
-      // 获取某篇博客的信息
-      this.$http.get(`${constants.serverUrl}/blog/${blogInfo.blogId}`)
-        .then((response) => {
-          this.blogContent.title = response.body.title;
-          this.blogContent.content = response.body.content;
-        });
+    handleBlogClick(blogId) {
+      this.blog.currentActiveBlogId = blogId;
     },
   },
 };
@@ -84,5 +76,9 @@ export default {
   padding: 0 10px 0 29px;
   font-size: 14px;
   color: #aaa;
+}
+
+.active-blog {
+  background-color: #FFDDAA;
 }
 </style>

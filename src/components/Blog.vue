@@ -9,16 +9,28 @@
           prefix-icon="el-icon-search"
           v-model="searchBar">
         </el-input>
-        <categorys :categorys="categorys"></categorys>
-        <blog-infos :blogInfos="blogInfos" :blogContent="blogContent"></blog-infos>
+        <categorys
+          :categorys="categorys"
+          :blog="blog">
+        </categorys>
+        <blog-infos
+          :blog="blog">
+        </blog-infos>
       </el-col>
       <el-col
         class="right-content"
         @scroll.native="scrollEvent"
         :sm="18" :md="18" :lg="18" :xl="18">
-        <normal-head-bar :buttons="buttons"></normal-head-bar>
-        <floating-head-bar id="floatingHeadBar" :buttons="buttons"></floating-head-bar>
-        <blog-content :blogContent="blogContent"></blog-content>
+        <normal-head-bar
+          :buttons="buttons">
+        </normal-head-bar>
+        <floating-head-bar
+          id="floatingHeadBar"
+          :buttons="buttons">
+        </floating-head-bar>
+        <blog-content
+          :blogContent="blogContent">
+        </blog-content>
       </el-col>
     </el-row>
 
@@ -37,7 +49,7 @@
         </el-dropdown-menu>
       </el-dropdown>
       <categorys :categorys="categorys"></categorys>
-      <blog-infos :blogInfos="blogInfos"></blog-infos>
+      <blog-infos :blog="blog"></blog-infos>
     </div>
   </div>
 </template>
@@ -65,8 +77,6 @@ export default {
       searchBar: '',
 
       // 类别组件相关数据
-      // 全部类别数组
-      allCategorys: [],
       // 显示在页面上的类别数组
       categorys: ['全部'],
       // 当前显示的第一个类别的序号
@@ -75,8 +85,14 @@ export default {
       showCategorysCount: 3,
 
       // 博客标题列表部分相关数据
-      // 显示在页面上的博客信息列表
-      blogInfos: [],
+      blog: {
+        // 拿到的所有博客信息列表
+        allBlogInfos: [],
+        // 显示在页面上的博客信息列表
+        blogInfos: [],
+        // 当前显示的博客的blogId
+        currentActiveBlogId: 0,
+      },
       // 每次请求多少个博客信息
       blogInfosCount: 10,
       // 最近一次请求的博客信息列表的序号
@@ -108,6 +124,49 @@ export default {
       },
     };
   },
+  watch: {
+    'blog.currentActiveBlogId': {
+      handler(value) {
+        // 获取对应id的博客的内容
+        this.$http.get(`${constants.serverUrl}/blog/${value}`)
+          .then((response) => {
+            this.blogContent.title = response.body.title;
+            this.blogContent.content = response.body.content;
+          });
+      },
+    },
+  },
+  mounted() {
+    // 获取类别数组
+    this.$http.get(`${constants.serverUrl}/blog/categorys`)
+      .then((response) => {
+        const tmpData = response.body;
+        for (let i = this.firstCategoryNumber - 1; i < this.showCategorysCount; i += 1) {
+          this.categorys.push(tmpData[i].category);
+        }
+      });
+
+    // 获取类别“全部”下的初始各博客信息
+    this.$http.get(`${constants.serverUrl}/blog/blogInfos/${this.blogInfosNumber}/${this.blogInfosCount}`)
+      .then((response) => {
+        // 将拿到的各博客信息数据按照时间排序
+        // 但其实这个工作应该后端做，并且以后每次新添加的博客的上传日期都应该更新
+        const tmpData = this.sortObjectArrayWithDate(response.body);
+        for (let i = 0; i < tmpData.length; i += 1) {
+          this.blog.allBlogInfos.push(tmpData[i]);
+          this.blog.blogInfos.push(tmpData[i]);
+        }
+
+        // 将当前显示内容的那一篇博客体现出激活态
+        this.blog.currentActiveBlogId = this.blog.blogInfos[0].blogId;
+        // // 获取默认的博客信息列表的第一篇博客的内容
+        // this.$http.get(`${constants.serverUrl}/blog/${this.blog.blogInfos[0].blogId}`)
+        //   .then((res) => {
+        //     this.blogContent.title = res.body.title;
+        //     this.blogContent.content = res.body.content;
+        //   });
+      });
+  },
   methods: {
     // 上下滑动博客内容部分的滑动时间
     scrollEvent(event) {
@@ -129,34 +188,6 @@ export default {
       resultArr.sort((obj1, obj2) => obj1.uploadDate < obj2.uploadDate);
       return resultArr;
     },
-  },
-  mounted() {
-    // 获取类别数组
-    this.$http.get(`${constants.serverUrl}/blog/categorys`)
-      .then((response) => {
-        const tmpData = response.body;
-        for (let i = this.firstCategoryNumber - 1; i < this.showCategorysCount; i += 1) {
-          this.categorys.push(tmpData[i].category);
-        }
-      });
-
-    // 获取类别“全部”下的初始各博客信息
-    this.$http.get(`${constants.serverUrl}/blog/blogInfos/${this.blogInfosNumber}/${this.blogInfosCount}`)
-      .then((response) => {
-        // 将拿到的各博客信息数据按照时间排序
-        // 但其实这个工作应该后端做，并且以后每次新添加的博客的上传日期都应该更新
-        const tmpData = this.sortObjectArrayWithDate(response.body);
-        for (let i = 0; i < tmpData.length; i += 1) {
-          this.blogInfos.push(tmpData[i]);
-        }
-
-        // 获取默认的博客信息列表的第一篇博客的内容
-        this.$http.get(`${constants.serverUrl}/blog/${this.blogInfos[0].blogId}`)
-          .then((res) => {
-            this.blogContent.title = res.body.title;
-            this.blogContent.content = res.body.content;
-          });
-      });
   },
 };
 </script>
