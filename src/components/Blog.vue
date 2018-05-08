@@ -10,7 +10,7 @@
           v-model="searchBar">
         </el-input>
         <categorys :categorys="categorys"></categorys>
-        <blogs-info :blogsInfo="blogsInfo"></blogs-info>
+        <blog-infos :blogInfos="blogInfos" :blogContent="blogContent"></blog-infos>
       </el-col>
       <el-col
         class="right-content"
@@ -18,7 +18,7 @@
         :sm="18" :md="18" :lg="18" :xl="18">
         <normal-head-bar :buttons="buttons"></normal-head-bar>
         <floating-head-bar id="floatingHeadBar" :buttons="buttons"></floating-head-bar>
-        <blog-content title="如何评价中山大学" :content="content"></blog-content>
+        <blog-content :blogContent="blogContent"></blog-content>
       </el-col>
     </el-row>
 
@@ -37,16 +37,15 @@
         </el-dropdown-menu>
       </el-dropdown>
       <categorys :categorys="categorys"></categorys>
-      <blogs-info :blogsInfo="blogsInfo"></blogs-info>
+      <blog-infos :blogInfos="blogInfos"></blog-infos>
     </div>
   </div>
 </template>
 
 <script>
 import constants from '@/utils/constants';
-import fakeData from '@/utils/fakeData';
 import Categorys from './components/Categorys';
-import BlogsInfo from './components/BlogsInfo';
+import BlogInfos from './components/BlogInfos';
 import NormalHeadBar from './components/NormalHeadBar';
 import FloatingHeadBar from './components/FloatingHeadBar';
 import BlogContent from './components/BlogContent';
@@ -55,7 +54,7 @@ export default {
   name: 'Blog',
   components: {
     Categorys,
-    BlogsInfo,
+    BlogInfos,
     NormalHeadBar,
     FloatingHeadBar,
     BlogContent,
@@ -77,11 +76,11 @@ export default {
 
       // 博客标题列表部分相关数据
       // 显示在页面上的博客信息列表
-      blogsInfo: [],
+      blogInfos: [],
       // 每次请求多少个博客信息
-      blogsInfoCount: 20,
+      blogInfosCount: 10,
       // 最近一次请求的博客信息列表的序号
-      blogsInfoNumber: 0,
+      blogInfosNumber: 0,
 
       // 普通的处于页面正常结构中的顶部跳转按钮列表中的各按钮信息
       buttons: [
@@ -102,8 +101,11 @@ export default {
       // 跳转按钮列表
       oldScrollTop: 0,
 
-      // 博客正文
-      content: fakeData.content,
+      // 博客内容部分
+      blogContent: {
+        title: '',
+        content: '',
+      },
     };
   },
   methods: {
@@ -121,6 +123,12 @@ export default {
     handleCommand(command) {
       this.$router.push({ name: command });
     },
+    // 将一个对象数组里的各项按时间由近到远排序
+    sortObjectArrayWithDate(arr) {
+      const resultArr = arr;
+      resultArr.sort((obj1, obj2) => obj1.uploadDate < obj2.uploadDate);
+      return resultArr;
+    },
   },
   mounted() {
     // 获取类别数组
@@ -132,15 +140,23 @@ export default {
         }
       });
 
-    // 获取所有现在已存的博客信息列表，模拟后端数据
-    const allBlogsInfo = fakeData.allBlogsInfo;
-    // 获取当前种类下的各博客信息
-    for (let i = this.blogsInfoNumber;
-      i < this.blogsInfoCount * (this.blogsInfoNumber + 1); i += 1) {
-      if (allBlogsInfo[i]) {
-        this.blogsInfo.push(allBlogsInfo[i]);
-      }
-    }
+    // 获取类别“全部”下的初始各博客信息
+    this.$http.get(`${constants.serverUrl}/blog/blogInfos/${this.blogInfosNumber}/${this.blogInfosCount}`)
+      .then((response) => {
+        // 将拿到的各博客信息数据按照时间排序
+        // 但其实这个工作应该后端做，并且以后每次新添加的博客的上传日期都应该更新
+        const tmpData = this.sortObjectArrayWithDate(response.body);
+        for (let i = 0; i < tmpData.length; i += 1) {
+          this.blogInfos.push(tmpData[i]);
+        }
+
+        // 获取默认的博客信息列表的第一篇博客的内容
+        this.$http.get(`${constants.serverUrl}/blog/${this.blogInfos[0].blogId}`)
+          .then((res) => {
+            this.blogContent.title = res.body.title;
+            this.blogContent.content = res.body.content;
+          });
+      });
   },
 };
 </script>

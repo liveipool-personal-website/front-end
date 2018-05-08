@@ -1,7 +1,7 @@
 <template>
   <div class="blog-content">
-    <div class="title">{{ title }}</div>
-    <div class="content">{{ content }}</div>
+    <div class="title">{{ blogContent.title }}</div>
+    <div class="content">{{ blogContent.content }}</div>
   </div>
 </template>
 
@@ -10,15 +10,15 @@ export default {
   // 博客内容
   name: 'BlogContent',
   props: {
-    // 博客标题
-    title: {
-      type: String,
-      default: '',
-    },
-    // 博客正文
-    content: {
-      type: String,
-      default: '',
+    // 博客内容部分
+    blogContent: {
+      type: Object,
+      default: function defaultBlogContent() {
+        return {
+          title: '暂无标题',
+          content: '暂无内容',
+        };
+      },
     },
   },
 };

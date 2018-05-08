@@ -1,6 +1,8 @@
 <template>
-  <div class="blogs-info">
-    <div class="blog-info" v-for="blogInfo in blogsInfo" :key="blogInfo.index">
+  <div class="blog-infos">
+    <div
+      class="blog-info" v-for="blogInfo in blogInfos"
+      :key="blogInfo.index" @click="handleBlogClick(blogInfo)">
       <div class="blog-title">· {{ blogInfo.title }}</div>
       <div class="blog-upload-date">{{ blogInfo.uploadDate }}</div>
     </div>
@@ -8,16 +10,38 @@
 </template>
 
 <script>
+import constants from '@/utils/constants';
+
 export default {
   // 博客相关信息
-  name: 'BlogsInfo',
+  name: 'BlogInfos',
   props: {
     // 显示在页面上的博客信息列表
-    blogsInfo: {
+    blogInfos: {
       type: Array,
-      default: function defaultBlogsInfo() {
+      default: function defaultBlogInfos() {
         return [];
       },
+    },
+    // 博客内容部分
+    blogContent: {
+      type: Object,
+      default: function defaultBlogContent() {
+        return {
+          title: '暂无标题',
+          content: '暂无内容',
+        };
+      },
+    },
+  },
+  methods: {
+    handleBlogClick(blogInfo) {
+      // 获取某篇博客的信息
+      this.$http.get(`${constants.serverUrl}/blog/${blogInfo.blogId}`)
+        .then((response) => {
+          this.blogContent.title = response.body.title;
+          this.blogContent.content = response.body.content;
+        });
     },
   },
 };
@@ -25,7 +49,7 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-.blogs-info {
+.blog-infos {
   width: 100%;
   height: calc(100% - 80px);
   overflow-y: auto;
